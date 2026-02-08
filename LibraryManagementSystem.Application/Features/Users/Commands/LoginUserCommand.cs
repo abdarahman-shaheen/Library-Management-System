@@ -1,13 +1,9 @@
 using MediatR;
-using LibraryManagementSystem.Application.Interfaces.Authentication;
+using System.Text;
+using System.Security.Cryptography;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.Interfaces;
-using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using LibraryManagementSystem.Application.Interfaces.Authentication;
 
 namespace LibraryManagementSystem.Application.Features.Users.Commands
 {

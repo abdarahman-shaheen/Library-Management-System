@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace LibraryManagementSystem.Domain.Entities
 {
     public class Author : BaseEntity

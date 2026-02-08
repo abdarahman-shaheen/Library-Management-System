@@ -1,10 +1,5 @@
 using FluentValidation;
 using MediatR;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using ValidationException = LibraryManagementSystem.Application.Validators.Exceptions.ValidationException;
 
 namespace LibraryManagementSystem.Application.Validators.Behaviors
 {
@@ -28,7 +23,7 @@ namespace LibraryManagementSystem.Application.Validators.Behaviors
                 var failures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
 
                 if (failures.Count != 0)
-                    throw new ValidationException(failures);
+                    throw new Exceptions.ValidationException(failures);
             }
             return await next();
         }

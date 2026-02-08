@@ -1,5 +1,3 @@
-using System;
-
 namespace LibraryManagementSystem.Application.Common.Dtos
 {
     public class BookDto

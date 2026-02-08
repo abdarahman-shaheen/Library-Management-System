@@ -1,10 +1,8 @@
 using MediatR;
-using LibraryManagementSystem.Application.Features.Users.Commands;
-using LibraryManagementSystem.Application.Features.Users.Queries;
 using Microsoft.AspNetCore.Mvc;
-
 using LibraryManagementSystem.Application.Common.Wrappers;
-using LibraryManagementSystem.Application.Common.Dtos; // Note: UserEndpoints might use UserDto if defined, though previous code used object. Adding for consistency or potential future use.
+using LibraryManagementSystem.Application.Features.Users.Queries;
+using LibraryManagementSystem.Application.Features.Users.Commands;
 
 namespace LibraryManagementSystem.API.Endpoints
 {
@@ -25,7 +23,6 @@ namespace LibraryManagementSystem.API.Endpoints
             group.MapPost("/", async ([FromBody] RegisterUserCommand command, ISender sender) =>
             {
                 var id = await sender.Send(command);
-                // Return 201 with location
                 return Results.Ok(new ApiResponse<int>(id, "User registered successfully"));
             }).AllowAnonymous();
             
@@ -38,7 +35,7 @@ namespace LibraryManagementSystem.API.Endpoints
                 }
                 catch
                 {
-                    return Results.Unauthorized(); // Exception middleware might catch this if it bubbles up, but Unauthorized() is standard 401
+                    return Results.Unauthorized(); 
                 }
             }).AllowAnonymous();
 

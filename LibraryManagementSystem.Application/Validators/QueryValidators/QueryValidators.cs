@@ -1,8 +1,8 @@
 using FluentValidation;
-using LibraryManagementSystem.Application.Features.Authors.Queries;
 using LibraryManagementSystem.Application.Features.Books.Queries;
-using LibraryManagementSystem.Application.Features.Borrowers.Queries;
 using LibraryManagementSystem.Application.Features.Users.Queries;
+using LibraryManagementSystem.Application.Features.Authors.Queries;
+using LibraryManagementSystem.Application.Features.Borrowers.Queries;
 
 namespace LibraryManagementSystem.Application.Validators.QueryValidators
 {

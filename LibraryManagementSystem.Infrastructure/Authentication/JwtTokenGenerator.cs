@@ -1,12 +1,11 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
-using LibraryManagementSystem.Application.Common.Settings;
-using LibraryManagementSystem.Application.Interfaces.Authentication;
-using LibraryManagementSystem.Domain.Entities;
+using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using LibraryManagementSystem.Domain.Entities;
+using LibraryManagementSystem.Application.Common.Settings;
+using LibraryManagementSystem.Application.Interfaces.Authentication;
 
 namespace LibraryManagementSystem.Infrastructure.Authentication
 {

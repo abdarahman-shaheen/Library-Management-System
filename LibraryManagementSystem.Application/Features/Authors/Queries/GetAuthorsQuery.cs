@@ -1,8 +1,8 @@
 using MediatR;
+using AutoMapper;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.Interfaces;
 using LibraryManagementSystem.Application.Common.Dtos;
-using AutoMapper;
 
 namespace LibraryManagementSystem.Application.Features.Authors.Queries
 {

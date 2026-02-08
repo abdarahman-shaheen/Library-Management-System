@@ -1,10 +1,9 @@
 using MediatR;
-using LibraryManagementSystem.Application.Features.Authors.Commands;
-using LibraryManagementSystem.Application.Features.Authors.Queries;
 using Microsoft.AspNetCore.Mvc;
-
-using LibraryManagementSystem.Application.Common.Wrappers;
 using LibraryManagementSystem.Application.Common.Dtos;
+using LibraryManagementSystem.Application.Common.Wrappers;
+using LibraryManagementSystem.Application.Features.Authors.Queries;
+using LibraryManagementSystem.Application.Features.Authors.Commands;
 
 namespace LibraryManagementSystem.API.Endpoints
 {
@@ -30,7 +29,6 @@ namespace LibraryManagementSystem.API.Endpoints
 
             group.MapGet("/{id}/with-books", async (int id, ISender sender) =>
             {
-
                 var author = await sender.Send(new GetAuthorWithBooksQuery { Id = id });
                  return author != null 
                     ? Results.Ok(new ApiResponse<object>(author, "Author retrieved successfully")) 

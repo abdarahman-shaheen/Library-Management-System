@@ -1,12 +1,9 @@
 using MediatR;
+using AutoMapper;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.Interfaces;
 using LibraryManagementSystem.Application.Common.Dtos;
-using AutoMapper;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace LibraryManagementSystem.Application.Features.Loans.Queries
 {

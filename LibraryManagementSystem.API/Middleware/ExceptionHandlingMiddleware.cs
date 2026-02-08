@@ -1,12 +1,7 @@
-using LibraryManagementSystem.Application.Common.Wrappers;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-using LibraryManagementSystem.Application.Validators.Exceptions; // Add this using
+using LibraryManagementSystem.Application.Common.Wrappers;
+using LibraryManagementSystem.Application.Validators.Exceptions; 
 
 namespace LibraryManagementSystem.API.Middleware
 {
@@ -52,7 +47,6 @@ namespace LibraryManagementSystem.API.Middleware
             {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 response.Message = "Internal Server Error";
-                // In production, simpler message
                 response.Errors = new List<string> { exception.Message }; 
             }
 

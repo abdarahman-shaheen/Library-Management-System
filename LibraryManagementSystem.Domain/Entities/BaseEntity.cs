@@ -1,5 +1,3 @@
-using System;
-
 namespace LibraryManagementSystem.Domain.Entities
 {
     public abstract class BaseEntity

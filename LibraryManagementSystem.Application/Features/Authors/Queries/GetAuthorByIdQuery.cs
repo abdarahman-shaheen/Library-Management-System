@@ -1,10 +1,8 @@
 using MediatR;
+using AutoMapper;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.Interfaces;
 using LibraryManagementSystem.Application.Common.Dtos;
-using AutoMapper;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.Application.Features.Authors.Queries
 {

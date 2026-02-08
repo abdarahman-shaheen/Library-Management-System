@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace LibraryManagementSystem.Application.Common.Dtos
 {
     public class AuthorDto

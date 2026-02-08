@@ -2,9 +2,6 @@ using MediatR;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.Interfaces;
 using LibraryManagementSystem.Application.Common.Dtos;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.Application.Features.Authors.Queries
 {

@@ -1,9 +1,10 @@
 using MediatR;
-using LibraryManagementSystem.Application.Features.Loans.Commands;
-using LibraryManagementSystem.Application.Features.Loans.Queries;
 using Microsoft.AspNetCore.Mvc;
-using LibraryManagementSystem.Application.Common.Wrappers;
 using LibraryManagementSystem.Application.Common.Dtos;
+using LibraryManagementSystem.Application.Common.Wrappers;
+using LibraryManagementSystem.Application.Features.Loans.Queries;
+using LibraryManagementSystem.Application.Features.Loans.Commands;
+
 namespace LibraryManagementSystem.API.Endpoints
 {
     public static class LoanEndpoints
@@ -14,7 +15,6 @@ namespace LibraryManagementSystem.API.Endpoints
 
             group.MapGet("/", async (ISender sender) =>
             {
-                // Assuming GetLoansMainQuery returns LoanDto or similar
                  var loans = await sender.Send(new GetLoansMainQuery());
                 return Results.Ok(new ApiResponse<object>(loans, "Loans retrieved successfully"));
             });

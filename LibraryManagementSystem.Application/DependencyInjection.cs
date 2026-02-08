@@ -1,7 +1,7 @@
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using FluentValidation;
 using MediatR;
+using FluentValidation;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using LibraryManagementSystem.Application.Validators.Behaviors;
 
 namespace LibraryManagementSystem.Application
