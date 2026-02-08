@@ -23,7 +23,7 @@ namespace LibraryManagementSystem.Application.Features.Borrowers.Queries
 
         public async Task<IEnumerable<BorrowerDto>> Handle(GetBorrowersQuery request, CancellationToken cancellationToken)
         {
-            var borrowers = await _repository.GetAllAsync();
+            var borrowers = await _repository.GetAllAsync(cancellationToken);
             return borrowers.Select(b => _mapper.Map<BorrowerDto>(b));
         }
     }

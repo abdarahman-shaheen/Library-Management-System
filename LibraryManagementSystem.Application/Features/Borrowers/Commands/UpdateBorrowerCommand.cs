@@ -25,15 +25,15 @@ namespace LibraryManagementSystem.Application.Features.Borrowers.Commands
 
         public async Task Handle(UpdateBorrowerCommand request, CancellationToken cancellationToken)
         {
-            var borrower = await _repository.GetByIdAsync(request.Id);
+            var borrower = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (borrower == null) return;
 
             borrower.Name = request.Name;
             borrower.Email = request.Email;
             borrower.Phone = request.Phone;
 
-            await _repository.UpdateAsync(borrower);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.UpdateAsync(borrower, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

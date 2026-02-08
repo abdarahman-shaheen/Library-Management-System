@@ -12,25 +12,25 @@ namespace LibraryManagementSystem.API.Endpoints
         {
             var group = app.MapGroup("/api/Users").WithTags("Users").RequireAuthorization(); // Default require auth
 
-            group.MapGet("/{id}", async (int id, ISender sender) =>
+            group.MapGet("/{id}", async (int id, ISender sender, CancellationToken cancellationToken) =>
             {
-                var user = await sender.Send(new GetUserByIdQuery { Id = id });
+                var user = await sender.Send(new GetUserByIdQuery { Id = id }, cancellationToken);
                 return user != null 
                     ? Results.Ok(new ApiResponse<object>(user, "User retrieved successfully")) // Keeping object since UserDto might not be inferred here easily
                     : Results.NotFound(new ApiResponse<object>("User not found"));
             });
 
-            group.MapPost("/", async ([FromBody] RegisterUserCommand command, ISender sender) =>
+            group.MapPost("/", async ([FromBody] RegisterUserCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
-                var id = await sender.Send(command);
+                var id = await sender.Send(command, cancellationToken);
                 return Results.Ok(new ApiResponse<int>(id, "User registered successfully"));
             }).AllowAnonymous();
             
-            group.MapPost("/login", async ([FromBody] LoginUserCommand command, ISender sender) =>
+            group.MapPost("/login", async ([FromBody] LoginUserCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 try 
                 {
-                    var token = await sender.Send(command);
+                    var token = await sender.Send(command, cancellationToken);
                     return Results.Ok(new ApiResponse<object>(new { Token = token }, "Login successful"));
                 }
                 catch
@@ -39,10 +39,10 @@ namespace LibraryManagementSystem.API.Endpoints
                 }
             }).AllowAnonymous();
 
-            group.MapPut("/{id}", async (int id, [FromBody] UpdateUserCommand command, ISender sender) =>
+            group.MapPut("/{id}", async (int id, [FromBody] UpdateUserCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 if (id != command.Id) return Results.BadRequest(new ApiResponse<string>("ID mismatch"));
-                await sender.Send(command);
+                await sender.Send(command, cancellationToken);
                 return Results.Ok(new ApiResponse<string>("User updated successfully", ""));
             });
         }

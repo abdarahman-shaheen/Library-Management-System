@@ -26,7 +26,7 @@ namespace LibraryManagementSystem.Application.Features.Books.Commands
 
         public async Task Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
-            var book = await _repository.GetByIdAsync(request.Id);
+            var book = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (book == null) return;
 
             book.Title = request.Title;
@@ -34,8 +34,8 @@ namespace LibraryManagementSystem.Application.Features.Books.Commands
             book.PublishedDate = request.PublishedDate;
             book.AuthorId = request.AuthorId;
 
-            await _repository.UpdateAsync(book);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.UpdateAsync(book, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

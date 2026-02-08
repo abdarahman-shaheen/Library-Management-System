@@ -28,14 +28,14 @@ namespace LibraryManagementSystem.Application.Features.Users.Commands
 
         public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetByIdAsync(request.Id);
+            var user = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (user == null) return;
 
             user.Username = request.Username;
             user.Email = request.Email;
 
-            await _repository.UpdateAsync(user);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.UpdateAsync(user, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

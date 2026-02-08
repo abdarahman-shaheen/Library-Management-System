@@ -23,7 +23,7 @@ namespace LibraryManagementSystem.Application.Features.Books.Queries
 
         public async Task<IEnumerable<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
         {
-            var books = await _repository.GetAllAsync();
+            var books = await _repository.GetAllAsync(cancellationToken);
             return books.Select(b => _mapper.Map<BookDto>(b));
         }
     }

@@ -20,7 +20,7 @@ namespace LibraryManagementSystem.Application.Features.Users.Queries
 
         public async Task<User?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _repository.GetByIdAsync(request.Id);
+            return await _repository.GetByIdAsync(request.Id, cancellationToken);
         }
     }
 }

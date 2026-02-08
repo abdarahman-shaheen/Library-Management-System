@@ -41,8 +41,8 @@ namespace LibraryManagementSystem.Application.Features.Users.Commands
                 Role = "User" // Default role
             };
 
-            await _repository.AddAsync(user);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.AddAsync(user, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return user.Id;
         }

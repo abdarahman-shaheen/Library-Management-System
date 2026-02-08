@@ -29,8 +29,8 @@ namespace LibraryManagementSystem.Application.Features.Authors.Commands
                 Bio = request.Bio
             };
 
-            await _repository.AddAsync(author);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.AddAsync(author, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return author.Id;
         }

@@ -13,36 +13,36 @@ namespace LibraryManagementSystem.API.Endpoints
         {
              var group = app.MapGroup("/api/borrowers").WithTags("Borrowers").RequireAuthorization();
 
-            group.MapGet("/", async (ISender sender) =>
+            group.MapGet("/", async (ISender sender, CancellationToken cancellationToken) =>
             {
-                var borrowers = await sender.Send(new GetBorrowersQuery());
+                var borrowers = await sender.Send(new GetBorrowersQuery(), cancellationToken);
                 return Results.Ok(new ApiResponse<IEnumerable<BorrowerDto>>(borrowers, "Borrowers retrieved successfully"));
             });
 
-            group.MapGet("/{id}", async (int id, ISender sender) =>
+            group.MapGet("/{id}", async (int id, ISender sender, CancellationToken cancellationToken) =>
             {
-                var borrower = await sender.Send(new GetBorrowerByIdQuery { Id = id });
+                var borrower = await sender.Send(new GetBorrowerByIdQuery { Id = id }, cancellationToken);
                 return borrower != null 
                     ? Results.Ok(new ApiResponse<BorrowerDto>(borrower, "Borrower retrieved successfully")) 
                     : Results.NotFound(new ApiResponse<BorrowerDto>("Borrower not found"));
             });
 
-            group.MapPost("/", async ([FromBody] CreateBorrowerCommand command, ISender sender) =>
+            group.MapPost("/", async ([FromBody] CreateBorrowerCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
-                var id = await sender.Send(command);
+                var id = await sender.Send(command, cancellationToken);
                 return Results.Ok(new ApiResponse<int>(id, "Borrower created successfully"));
             });
 
-            group.MapPut("/{id}", async (int id, [FromBody] UpdateBorrowerCommand command, ISender sender) =>
+            group.MapPut("/{id}", async (int id, [FromBody] UpdateBorrowerCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 if (id != command.Id) return Results.BadRequest(new ApiResponse<string>("ID mismatch"));
-                await sender.Send(command);
+                await sender.Send(command, cancellationToken);
                 return Results.Ok(new ApiResponse<string>("Borrower updated successfully", ""));
             });
 
-            group.MapDelete("/{id}", async (int id, ISender sender) =>
+            group.MapDelete("/{id}", async (int id, ISender sender, CancellationToken cancellationToken) =>
             {
-                await sender.Send(new DeleteBorrowerCommand { Id = id });
+                await sender.Send(new DeleteBorrowerCommand { Id = id }, cancellationToken);
                 return Results.Ok(new ApiResponse<string>("Borrower deleted successfully", ""));
             });
         }

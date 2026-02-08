@@ -33,8 +33,8 @@ namespace LibraryManagementSystem.Application.Features.Books.Commands
                 AuthorId = request.AuthorId
             };
 
-            await _repository.AddAsync(book);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.AddAsync(book, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return book.Id;
         }

@@ -22,8 +22,8 @@ namespace LibraryManagementSystem.Application.Features.Books.Commands
 
         public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync(request.Id);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.DeleteAsync(request.Id, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

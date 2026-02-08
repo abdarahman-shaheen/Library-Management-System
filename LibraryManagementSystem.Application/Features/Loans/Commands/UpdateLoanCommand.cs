@@ -25,20 +25,20 @@ namespace LibraryManagementSystem.Application.Features.Loans.Commands
 
         public async Task Handle(UpdateLoanCommand request, CancellationToken cancellationToken)
         {
-            var loan = await _repository.GetByIdAsync(request.Id);
+            var loan = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (loan == null) return;
 
             loan.ReturnDate = request.ReturnDate;
-            await _repository.UpdateAsync(loan);
+            await _repository.UpdateAsync(loan, cancellationToken);
 
-            var book = await _bookRepository.GetByIdAsync(loan.BookId);
+            var book = await _bookRepository.GetByIdAsync(loan.BookId, cancellationToken);
             if (book != null)
             {
                 book.IsBorrowed = false;
-                await _bookRepository.UpdateAsync(book);
+                await _bookRepository.UpdateAsync(book, cancellationToken);
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -13,44 +13,44 @@ namespace LibraryManagementSystem.API.Endpoints
         {
             var group = app.MapGroup("/api/authors").WithTags("Authors").RequireAuthorization();
 
-            group.MapGet("/", async (ISender sender) =>
+            group.MapGet("/", async (ISender sender, CancellationToken cancellationToken) =>
             {
-                var authors = await sender.Send(new GetAuthorsQuery());
+                var authors = await sender.Send(new GetAuthorsQuery(), cancellationToken);
                 return Results.Ok(new ApiResponse<IEnumerable<AuthorDto>>(authors, "Authors retrieved successfully"));
             });
 
-            group.MapGet("/{id}", async (int id, ISender sender) =>
+            group.MapGet("/{id}", async (int id, ISender sender, CancellationToken cancellationToken) =>
             {
-                var author = await sender.Send(new GetAuthorByIdQuery { Id = id });
+                var author = await sender.Send(new GetAuthorByIdQuery { Id = id }, cancellationToken);
                 return author != null 
                     ? Results.Ok(new ApiResponse<AuthorDto>(author, "Author retrieved successfully")) 
                     : Results.NotFound(new ApiResponse<AuthorDto>("Author not found"));
             });
 
-            group.MapGet("/{id}/with-books", async (int id, ISender sender) =>
+            group.MapGet("/{id}/with-books", async (int id, ISender sender, CancellationToken cancellationToken) =>
             {
-                var author = await sender.Send(new GetAuthorWithBooksQuery { Id = id });
+                var author = await sender.Send(new GetAuthorWithBooksQuery { Id = id }, cancellationToken);
                  return author != null 
                     ? Results.Ok(new ApiResponse<object>(author, "Author retrieved successfully")) 
                     : Results.NotFound(new ApiResponse<object>("Author not found"));
             });
 
-            group.MapPost("/", async ([FromBody] CreateAuthorCommand command, ISender sender) =>
+            group.MapPost("/", async ([FromBody] CreateAuthorCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
-                var id = await sender.Send(command);
+                var id = await sender.Send(command, cancellationToken);
                 return Results.Ok(new ApiResponse<int>(id, "Author created successfully"));
             });
 
-            group.MapPut("/{id}", async (int id, [FromBody] UpdateAuthorCommand command, ISender sender) =>
+            group.MapPut("/{id}", async (int id, [FromBody] UpdateAuthorCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 if (id != command.Id) return Results.BadRequest(new ApiResponse<string>("ID mismatch"));
-                await sender.Send(command);
+                await sender.Send(command, cancellationToken);
                 return Results.Ok(new ApiResponse<string>("Author updated successfully", ""));
             });
 
-            group.MapDelete("/{id}", async (int id, ISender sender) =>
+            group.MapDelete("/{id}", async (int id, ISender sender, CancellationToken cancellationToken) =>
             {
-                await sender.Send(new DeleteAuthorCommand { Id = id });
+                await sender.Send(new DeleteAuthorCommand { Id = id }, cancellationToken);
                 return Results.Ok(new ApiResponse<string>("Author deleted successfully", ""));
             });
         }

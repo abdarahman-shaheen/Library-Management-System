@@ -24,14 +24,14 @@ namespace LibraryManagementSystem.Application.Features.Authors.Commands
 
         public async Task Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
         {
-            var author = await _repository.GetByIdAsync(request.Id);
+            var author = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (author == null) return;
 
             author.Name = request.Name;
             author.Bio = request.Bio;
 
-            await _repository.UpdateAsync(author);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.UpdateAsync(author, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

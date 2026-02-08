@@ -24,7 +24,7 @@ namespace LibraryManagementSystem.Application.Features.Borrowers.Queries
 
         public async Task<BorrowerDto?> Handle(GetBorrowerByIdQuery request, CancellationToken cancellationToken)
         {
-            var borrower = await _repository.GetByIdAsync(request.Id);
+            var borrower = await _repository.GetByIdAsync(request.Id, cancellationToken);
             return borrower == null ? null : _mapper.Map<BorrowerDto>(borrower);
         }
     }

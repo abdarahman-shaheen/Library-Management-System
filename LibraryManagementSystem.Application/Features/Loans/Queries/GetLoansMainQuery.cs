@@ -24,7 +24,7 @@ namespace LibraryManagementSystem.Application.Features.Loans.Queries
 
         public async Task<IEnumerable<LoanDto>> Handle(GetLoansMainQuery request, CancellationToken cancellationToken)
         {
-            var loans = await _repository.GetAllAsync();
+            var loans = await _repository.GetAllAsync(cancellationToken);
             return loans.Select(l => _mapper.Map<LoanDto>(l));
         }
     }

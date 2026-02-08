@@ -33,11 +33,11 @@ namespace LibraryManagementSystem.Application.Features.Loans.Commands
             // But for simple start, let's assume we can loan. 
             // Better: update Book.IsBorrowed = true.
 
-            var book = await _bookRepository.GetByIdAsync(request.BookId);
+            var book = await _bookRepository.GetByIdAsync(request.BookId, cancellationToken);
             if (book != null)
             {
                  book.IsBorrowed = true;
-                 await _bookRepository.UpdateAsync(book);
+                 await _bookRepository.UpdateAsync(book, cancellationToken);
             }
 
             var loan = new Loan
@@ -47,8 +47,8 @@ namespace LibraryManagementSystem.Application.Features.Loans.Commands
                 LoanDate = DateTime.UtcNow
             };
 
-            await _repository.AddAsync(loan);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.AddAsync(loan, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return loan.Id;
         }

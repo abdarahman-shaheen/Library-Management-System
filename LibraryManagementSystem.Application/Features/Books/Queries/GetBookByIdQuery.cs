@@ -25,7 +25,7 @@ namespace LibraryManagementSystem.Application.Features.Books.Queries
 
         public async Task<BookDto?> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
         {
-            var book = await _repository.GetByIdAsync(request.Id);
+            var book = await _repository.GetByIdAsync(request.Id, cancellationToken);
             return book == null ? null : _mapper.Map<BookDto>(book);
         }
     }

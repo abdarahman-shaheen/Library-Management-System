@@ -26,7 +26,7 @@ namespace LibraryManagementSystem.Application.Features.Users.Commands
 
         public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var users = await _repository.FindAsync(u => u.Email == request.Email);
+            var users = await _repository.FindAsync(u => u.Email == request.Email, cancellationToken);
             var user = users.FirstOrDefault();
 
             if (user == null)

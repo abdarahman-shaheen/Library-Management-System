@@ -31,8 +31,8 @@ namespace LibraryManagementSystem.Application.Features.Borrowers.Commands
                 Phone = request.Phone
             };
 
-            await _repository.AddAsync(borrower);
-            await _unitOfWork.SaveChangesAsync();
+            await _repository.AddAsync(borrower, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return borrower.Id;
         }

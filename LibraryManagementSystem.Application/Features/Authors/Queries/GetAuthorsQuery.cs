@@ -23,7 +23,7 @@ namespace LibraryManagementSystem.Application.Features.Authors.Queries
 
         public async Task<IEnumerable<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
         {
-            var authors = await _repository.GetAllAsync();
+            var authors = await _repository.GetAllAsync(cancellationToken);
             return authors.Select(a => _mapper.Map<AuthorDto>(a));
         }
     }

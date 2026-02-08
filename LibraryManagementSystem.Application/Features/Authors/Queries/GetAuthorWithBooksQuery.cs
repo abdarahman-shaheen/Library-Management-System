@@ -21,7 +21,7 @@ namespace LibraryManagementSystem.Application.Features.Authors.Queries
 
         public async Task<AuthorDto?> Handle(GetAuthorWithBooksQuery request, CancellationToken cancellationToken)
         {
-            var author = await _repository.GetByIdWithIncludesAsync(request.Id, a => a.Books!);
+            var author = await _repository.GetByIdWithIncludesAsync(request.Id, cancellationToken, a => a.Books!);
             if (author == null) return null;
 
             var dto = new AuthorDto
