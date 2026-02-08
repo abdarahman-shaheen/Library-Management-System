@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using LibraryManagementSystem.Application.Common.Wrappers;
 using LibraryManagementSystem.Application.Features.Users.Queries;
 using LibraryManagementSystem.Application.Features.Users.Commands;
+using LibraryManagementSystem.API.Infrastructure;
 
 namespace LibraryManagementSystem.API.Endpoints
 {
@@ -10,20 +11,21 @@ namespace LibraryManagementSystem.API.Endpoints
     {
         public static void MapUserEndpoints(this IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("/api/Users").WithTags("Users").RequireAuthorization(); // Default require auth
+            var group = app.MapGroup("/api/Users")
+                .WithTags("Users")
+                .RequireAuthorization()
+                .AddEndpointFilter<ResponseWrapperFilter>();
 
             group.MapGet("/{id}", async (int id, ISender sender, CancellationToken cancellationToken) =>
             {
                 var user = await sender.Send(new GetUserByIdQuery { Id = id }, cancellationToken);
-                return user != null 
-                    ? Results.Ok(new ApiResponse<object>(user, "User retrieved successfully")) // Keeping object since UserDto might not be inferred here easily
-                    : Results.NotFound(new ApiResponse<object>("User not found"));
+                return user is not null ? Results.Ok(user) : Results.NotFound();
             });
 
             group.MapPost("/", async ([FromBody] RegisterUserCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 var id = await sender.Send(command, cancellationToken);
-                return Results.Ok(new ApiResponse<int>(id, "User registered successfully"));
+                return Results.Ok(id);
             }).AllowAnonymous();
             
             group.MapPost("/login", async ([FromBody] LoginUserCommand command, ISender sender, CancellationToken cancellationToken) =>
@@ -31,7 +33,7 @@ namespace LibraryManagementSystem.API.Endpoints
                 try 
                 {
                     var token = await sender.Send(command, cancellationToken);
-                    return Results.Ok(new ApiResponse<object>(new { Token = token }, "Login successful"));
+                    return Results.Ok(new { Token = token });
                 }
                 catch
                 {
@@ -41,9 +43,9 @@ namespace LibraryManagementSystem.API.Endpoints
 
             group.MapPut("/{id}", async (int id, [FromBody] UpdateUserCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
-                if (id != command.Id) return Results.BadRequest(new ApiResponse<string>("ID mismatch"));
+                if (id != command.Id) return Results.BadRequest("ID mismatch");
                 await sender.Send(command, cancellationToken);
-                return Results.Ok(new ApiResponse<string>("User updated successfully", ""));
+                return Results.Ok("User updated successfully");
             });
         }
     }

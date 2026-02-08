@@ -4,6 +4,7 @@ using LibraryManagementSystem.Application.Common.Dtos;
 using LibraryManagementSystem.Application.Common.Wrappers;
 using LibraryManagementSystem.Application.Features.Loans.Queries;
 using LibraryManagementSystem.Application.Features.Loans.Commands;
+using LibraryManagementSystem.API.Infrastructure;
 
 namespace LibraryManagementSystem.API.Endpoints
 {
@@ -11,31 +12,34 @@ namespace LibraryManagementSystem.API.Endpoints
     {
         public static void MapLoanEndpoints(this IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("/api/loans").WithTags("Loans").RequireAuthorization();
+            var group = app.MapGroup("/api/loans")
+                .WithTags("Loans")
+                .RequireAuthorization()
+                .AddEndpointFilter<ResponseWrapperFilter>();
 
             group.MapGet("/", async (ISender sender, CancellationToken cancellationToken) =>
             {
                  var loans = await sender.Send(new GetLoansMainQuery(), cancellationToken);
-                return Results.Ok(new ApiResponse<object>(loans, "Loans retrieved successfully"));
+                return Results.Ok(loans);
             });
 
             group.MapGet("/with-details", async (ISender sender, CancellationToken cancellationToken) =>
             {
                 var loans = await sender.Send(new GetLoansQuery(), cancellationToken);
-                return Results.Ok(new ApiResponse<IEnumerable<LoanDto>>(loans, "Loans retrieved successfully"));
+                return Results.Ok(loans);
             });
 
             group.MapPost("/", async ([FromBody] CreateLoanCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 var id = await sender.Send(command, cancellationToken);
-                return Results.Ok(new ApiResponse<int>(id, "Loan created successfully"));
+                return Results.Ok(id);
             });
 
             group.MapPut("/{id}", async (int id, [FromBody] UpdateLoanCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
-                if (id != command.Id) return Results.BadRequest(new ApiResponse<string>("ID mismatch"));
+                if (id != command.Id) return Results.BadRequest("ID mismatch");
                 await sender.Send(command, cancellationToken);
-                return Results.Ok(new ApiResponse<string>("Loan updated successfully", ""));
+                return Results.Ok("Loan updated successfully");
             });
         }
     }
