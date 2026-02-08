@@ -72,7 +72,7 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseExceptionHandler(options => { });
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
