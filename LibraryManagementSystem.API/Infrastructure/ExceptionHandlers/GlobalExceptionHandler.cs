@@ -1,20 +1,15 @@
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
-using LibraryManagementSystem.Application.Common.Wrappers;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace LibraryManagementSystem.API.Infrastructure.ExceptionHandlers
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {
+        private readonly IProblemDetailsService _problemDetailsService;
         private readonly ILogger<GlobalExceptionHandler> _logger;
 
-        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+        public GlobalExceptionHandler(IProblemDetailsService problemDetailsService, ILogger<GlobalExceptionHandler> logger)
         {
+            _problemDetailsService = problemDetailsService;
             _logger = logger;
         }
 
@@ -22,15 +17,22 @@ namespace LibraryManagementSystem.API.Infrastructure.ExceptionHandlers
         {
             _logger.LogError(exception, "An unexpected error occurred: {Message}", exception.Message);
 
-            var response = new ApiResponse<string>("An internal server error has occurred.")
+            return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
             {
-                Succeeded = false,
-                Errors = new List<string> { exception.Message } 
-            };
-
-            httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
-            return true;
+                HttpContext = httpContext,
+                Exception = exception,
+                ProblemDetails =
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "Internal Server Error",
+                    Detail = exception.Message,
+                    Extensions = 
+                    {
+                        ["succeeded"] = false,
+                        ["errors"] = new List<string> { exception.Message }
+                    }
+                }
+            });
         }
     }
 }

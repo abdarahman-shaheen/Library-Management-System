@@ -1,28 +1,39 @@
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using LibraryManagementSystem.Application.Common.Wrappers;
 using LibraryManagementSystem.Application.Validators.Exceptions;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.API.Infrastructure.ExceptionHandlers
 {
     public class ValidationExceptionHandler : IExceptionHandler
     {
+        private readonly IProblemDetailsService _problemDetailsService;
+
+        public ValidationExceptionHandler(IProblemDetailsService problemDetailsService)
+        {
+            _problemDetailsService = problemDetailsService;
+        }
+
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
             if (exception is ValidationException validationException)
             {
-                var response = new ApiResponse<string>("Validation Errors", validationException.Errors)
-                {
-                    Succeeded = false
-                };
-
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
-                return true;
+
+                return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+                {
+                    HttpContext = httpContext,
+                    Exception = exception,
+                    ProblemDetails =
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Title = "Validation Error",
+                        Detail = "One or more validation failures have occurred.",
+                        Extensions = 
+                        {
+                            ["succeeded"] = false,
+                            ["errors"] = validationException.Errors
+                        }
+                    }
+                });
             }
 
             return false;
