@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using LibraryManagementSystem.API.Infrastructure.ExceptionHandlers;
+using LibraryManagementSystem.API.Middleware.ExceptionHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 

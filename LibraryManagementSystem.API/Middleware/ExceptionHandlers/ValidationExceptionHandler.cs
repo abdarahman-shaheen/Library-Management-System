@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using LibraryManagementSystem.Application.Validators.Exceptions;
 
-namespace LibraryManagementSystem.API.Infrastructure.ExceptionHandlers
+namespace LibraryManagementSystem.API.Middleware.ExceptionHandlers
 {
     public class ValidationExceptionHandler : IExceptionHandler
     {

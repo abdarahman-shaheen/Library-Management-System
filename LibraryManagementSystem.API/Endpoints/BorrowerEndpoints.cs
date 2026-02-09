@@ -4,7 +4,7 @@ using LibraryManagementSystem.Application.Common.Dtos;
 using LibraryManagementSystem.Application.Common.Wrappers;
 using LibraryManagementSystem.Application.Features.Borrowers.Queries;
 using LibraryManagementSystem.Application.Features.Borrowers.Commands;
-using LibraryManagementSystem.API.Infrastructure;
+using LibraryManagementSystem.API.Filters.EndpointFilters;
 
 namespace LibraryManagementSystem.API.Endpoints
 {

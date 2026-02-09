@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using LibraryManagementSystem.Application.Common.Wrappers;
 using LibraryManagementSystem.Application.Features.Users.Queries;
 using LibraryManagementSystem.Application.Features.Users.Commands;
-using LibraryManagementSystem.API.Infrastructure;
+using LibraryManagementSystem.API.Filters.EndpointFilters;
 
 namespace LibraryManagementSystem.API.Endpoints
 {

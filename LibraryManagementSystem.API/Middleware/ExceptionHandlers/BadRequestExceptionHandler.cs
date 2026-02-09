@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace LibraryManagementSystem.API.Infrastructure.ExceptionHandlers
+namespace LibraryManagementSystem.API.Middleware.ExceptionHandlers
 {
     public class BadRequestExceptionHandler : IExceptionHandler
     {

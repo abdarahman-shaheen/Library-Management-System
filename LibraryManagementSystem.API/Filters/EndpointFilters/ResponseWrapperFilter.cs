@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using LibraryManagementSystem.Application.Common.Wrappers;
 using System.Threading.Tasks;
 
-namespace LibraryManagementSystem.API.Infrastructure
+namespace LibraryManagementSystem.API.Filters.EndpointFilters
 {
     public class ResponseWrapperFilter : IEndpointFilter
     {
