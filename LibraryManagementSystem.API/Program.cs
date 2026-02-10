@@ -1,4 +1,5 @@
 using LibraryManagementSystem.API.Endpoints;
+using Microsoft.EntityFrameworkCore;
 using LibraryManagementSystem.Application;
 using LibraryManagementSystem.Infrastructure;
 using LibraryManagementSystem.Infrastructure.Data;
@@ -98,7 +99,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<LibraryDbContext>();
-        context.Database.EnsureCreated();
+        context.Database.Migrate();
         DbInitializer.Seed(context);
     }
     catch (Exception ex)

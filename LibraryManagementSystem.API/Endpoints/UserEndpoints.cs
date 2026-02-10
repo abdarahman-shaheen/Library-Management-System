@@ -32,12 +32,25 @@ namespace LibraryManagementSystem.API.Endpoints
             {
                 try 
                 {
-                    var token = await sender.Send(command, cancellationToken);
-                    return Results.Ok(new { Token = token });
+                    var response = await sender.Send(command, cancellationToken);
+                    return Results.Ok(response);
                 }
                 catch
                 {
                     return Results.Unauthorized(); 
+                }
+            }).AllowAnonymous();
+
+            group.MapPost("/refresh-token", async ([FromBody] RefreshTokenCommand command, ISender sender, CancellationToken cancellationToken) =>
+            {
+                try
+                {
+                    var response = await sender.Send(command, cancellationToken);
+                    return Results.Ok(response);
+                }
+                catch
+                {
+                    return Results.BadRequest("Invalid token");
                 }
             }).AllowAnonymous();
 
